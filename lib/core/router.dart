@@ -8,17 +8,17 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
       path: '/',
       builder: (context, state) => const TicketScreen(),
     ),
-    GoRoute(
-      path: '/filter',
-      builder: (context, state) => const FilterScreen(),
-    ),
-    GoRoute(
-      path: '/contacts',
-      builder: (context, state) => const ContactScreen(),
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
+    // GoRoute(
+    //   path: '/filter',
+    //   builder: (context, state) => const FilterScreen(),
+    // ),
+    // GoRoute(
+    //   path: '/contacts',
+    //   builder: (context, state) => const ContactScreen(),
+    // ),
+    // GoRoute(
+    //   path: '/profile',
+    //   builder: (context, state) => const ProfileScreen(),
+    // ),
   ],
 ));
