@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketing_app/features/contacts/data/models/contact.dart';
-import 'package:ticketing_app/features/contacts/data/repositories/contact_repository.dart';
+
+import '../../data/models/contact.dart';
+import '../../data/repositories/contact_repository.dart';
+
 
 final contactProvider = StateNotifierProvider<ContactNotifier, AsyncValue<List<Contact>>>((ref) {
   return ContactNotifier(ref.read(contactRepositoryProvider));

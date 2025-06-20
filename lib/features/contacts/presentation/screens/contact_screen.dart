@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketing_app/features/contacts/presentation/providers/contact_provider.dart';
-import 'package:ticketing_app/features/contacts/data/models/contact.dart';
+import 'package:go_router/go_router.dart';
+
+import '../providers/contact_provider.dart';
+
 
 class ContactScreen extends ConsumerWidget {
   const ContactScreen({super.key});
