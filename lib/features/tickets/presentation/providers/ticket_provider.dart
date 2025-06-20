@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/models/ticket.dart';
+import '../../data/repositories/ticket_repository.dart';
+
 
 final ticketProvider = StateNotifierProvider<TicketNotifier, AsyncValue<List<Ticket>>>((ref) {
   return TicketNotifier(ref.read(ticketRepositoryProvider));
