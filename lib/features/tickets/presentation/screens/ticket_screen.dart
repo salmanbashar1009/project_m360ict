@@ -11,19 +11,17 @@ class TicketScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ticketState = ref.watch(ticketProvider);
     final ticketNotifier = ref.watch(ticketProvider.notifier);
+    final textTheme = Theme.of(context).textTheme.bodyMedium;
 
-    // Check for snackbar trigger after frame is built
     ticketState.when(
-      data: (tickets) {
+      data: (_) {
         if (ticketNotifier.showNoMatchSnackbar && ticketNotifier.filteredTicketCount == 0) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).removeCurrentSnackBar(); // Clear any existing snackbar
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No match'),
-                duration: Duration(seconds: 2),
-              ),
-            );
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('No match'), duration: Duration(seconds: 2)),
+              );
           });
         }
       },
@@ -31,20 +29,8 @@ class TicketScreen extends ConsumerWidget {
       error: (_, __) {},
     );
 
-    Color _getStatusColor(String status) {
-      switch (status.toLowerCase()) {
-        case 'new':
-          return Colors.blue;
-        case 'first response overdue':
-          return Colors.amber;
-        case 'customer responded':
-          return Colors.purple;
-        default:
-          return Colors.black87;
-      }
-    }
-
     debugPrint('============= TicketScreen built =============');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tickets'),
@@ -60,72 +46,89 @@ class TicketScreen extends ConsumerWidget {
         data: (tickets) => ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: tickets.length,
-          itemBuilder: (context, index) {
-            final ticket = tickets[index];
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 16),
-              color: Colors.white70,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: _getStatusColor(ticket.status).withAlpha(50),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        ticket.status,
-                        style: TextStyle(color: _getStatusColor(ticket.status)),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "id: ${ticket.id}",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      ticket.title,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${ticket.name} • ${ticket.date}'),
-                        Text('\$${ticket.price.toStringAsFixed(2)}'),
-                      ],
-                    ),
-                    const Divider(),
-                    PriorityButtons(priorityText: ticket.priority),
-                  ],
-                ),
-              ),
-            );
-          },
+          itemBuilder: (context, index) => TicketCard(ticket: tickets[index], textStyle: textTheme!),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Error: $error')),
+        error: (err, _) => Center(child: Text('Error: $err')),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         currentIndex: 0,
         onTap: (index) {
-          if (index == 1) context.push('/contacts');
-          else if (index == 2) context.push('/profile');
+          const paths = ['/tickets', '/contacts', '/profile'];
+          if (index < paths.length) context.push(paths[index]);
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: 'Tickets'),
           BottomNavigationBarItem(icon: Icon(Icons.contacts), label: 'Contacts'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
+      ),
+    );
+  }
+}
+
+class TicketCard extends StatelessWidget {
+  final dynamic ticket;
+  final TextStyle textStyle;
+
+  const TicketCard({super.key, required this.ticket, required this.textStyle});
+
+  Color getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'new':
+        return Colors.blue;
+      case 'first response overdue':
+        return Colors.amber;
+      case 'customer responded':
+        return Colors.purple;
+      default:
+        return Colors.black87;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final statusColor = getStatusColor(ticket.status);
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      color: Colors.grey.shade50,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: statusColor.withAlpha(50),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              ticket.status,
+              style: textStyle.copyWith(color: statusColor),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "id: ${ticket.id}",
+            style: textStyle.copyWith(color: Colors.grey, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            ticket.title,
+            style: textStyle.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${ticket.name} • ${ticket.date}'),
+              Text('\$${ticket.price.toStringAsFixed(2)}'),
+            ],
+          ),
+          const Divider(),
+          PriorityButtons(priorityText: ticket.priority),
+        ]),
       ),
     );
   }

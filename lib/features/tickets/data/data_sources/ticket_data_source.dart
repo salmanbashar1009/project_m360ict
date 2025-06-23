@@ -36,7 +36,7 @@ class TicketDataSource {
           title: 'Sports Event',
           date: '2025-07-10',
           status: 'Customer responded',
-          priority: 'Medium',
+          priority: 'Low',
           name: 'Bashar',
           price: 49.99),
       Ticket(
@@ -44,7 +44,7 @@ class TicketDataSource {
           title: 'Concert A',
           date: '2025-07-01',
           status: 'New',
-          priority: "Low",
+          priority: "Urgent",
           name: "Tahmin",
           price: 99.99),
       Ticket(
@@ -52,7 +52,7 @@ class TicketDataSource {
           title: 'Concert A',
           date: '2025-07-01',
           status: 'New',
-          priority: "Low",
+          priority: "Medium",
           name: "Tahmin",
           price: 99.99),
       Ticket(
@@ -60,7 +60,7 @@ class TicketDataSource {
           title: 'Sports Event',
           date: '2025-07-10',
           status: 'Customer responded',
-          priority: 'Medium',
+          priority: 'urgent',
           name: 'Bashar',
           price: 49.99),
       Ticket(
@@ -68,7 +68,7 @@ class TicketDataSource {
           title: 'Movie Premiere',
           date: '2025-07-05',
           status: 'First response overdue',
-          priority: "Urgent",
+          priority: "Medium",
           name: "Habib",
           price: 15.50),
       Ticket(
@@ -76,7 +76,7 @@ class TicketDataSource {
           title: 'Sports Event',
           date: '2025-07-10',
           status: 'Customer responded',
-          priority: 'Medium',
+          priority: 'Low',
           name: 'Bashar',
           price: 49.99),
       Ticket(
@@ -84,7 +84,7 @@ class TicketDataSource {
           title: 'Concert A',
           date: '2025-07-01',
           status: 'New',
-          priority: "Low",
+          priority: "Medium",
           name: "Tahmin",
           price: 99.99),
       Ticket(
@@ -92,7 +92,7 @@ class TicketDataSource {
           title: 'Concert A',
           date: '2025-07-01',
           status: 'New',
-          priority: "Low",
+          priority: "Urgent",
           name: "Tahmin",
           price: 99.99),
       Ticket(
@@ -100,7 +100,7 @@ class TicketDataSource {
           title: 'Sports Event',
           date: '2025-07-10',
           status: 'Customer responded',
-          priority: 'Medium',
+          priority: 'Low',
           name: 'Bashar',
           price: 49.99),
       Ticket(
@@ -108,7 +108,7 @@ class TicketDataSource {
           title: 'Movie Premiere',
           date: '2025-07-05',
           status: 'First response overdue',
-          priority: "Urgent",
+          priority: "Medium",
           name: "Habib",
           price: 15.50),
       Ticket(
@@ -116,7 +116,7 @@ class TicketDataSource {
           title: 'Sports Event',
           date: '2025-07-10',
           status: 'Customer responded',
-          priority: 'Medium',
+          priority: 'Low',
           name: 'Bashar',
           price: 49.99),
       Ticket(
