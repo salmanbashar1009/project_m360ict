@@ -5,12 +5,14 @@ import '../models/ticket.dart';
 
 class TicketDataSource {
   Future<List<Ticket>> getTickets() async {
-    // Simulate API delay
+    /// API simulation with a 1-second delay
     await Future.delayed(const Duration(seconds: 1));
     return [
-      Ticket(id: '1', title: 'Concert A', date: '2025-07-01', status: 'Confirmed', price: 99.99),
-      Ticket(id: '2', title: 'Movie Premiere', date: '2025-07-05', status: 'Pending', price: 15.50),
-      Ticket(id: '3', title: 'Sports Event', date: '2025-07-10', status: 'Confirmed', price: 49.99),
+      Ticket(id: '#01',  title: 'Concert A', date: '2025-07-01', status: 'New',priority: "Low",name: "Tahmin", price: 99.99),
+      Ticket(id: '#03', title: 'Sports Event', date: '2025-07-10', status: 'Customer responded',priority:'Medium' , name: 'Bashar', price: 49.99),
+      Ticket(id: '#02', title: 'Movie Premiere', date: '2025-07-05', status: 'First response overdue',priority: "Urgent",name: "Habib", price: 15.50),
+      Ticket(id: '#03', title: 'Sports Event', date: '2025-07-10', status: 'Customer responded',priority:'Medium' , name: 'Bashar', price: 49.99),
+      Ticket(id: '#01',  title: 'Concert A', date: '2025-07-01', status: 'New',priority: "Low",name: "Tahmin", price: 99.99),
     ];
   }
 }
