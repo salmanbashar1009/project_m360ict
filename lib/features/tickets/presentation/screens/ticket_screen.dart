@@ -4,13 +4,32 @@ import 'package:go_router/go_router.dart';
 import 'package:project_m360ict/features/tickets/presentation/screens/widgets/priority_button.dart';
 import '../providers/ticket_provider.dart';
 
-
 class TicketScreen extends ConsumerWidget {
   const TicketScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ticketState = ref.watch(ticketProvider);
+    final ticketNotifier = ref.watch(ticketProvider.notifier);
+
+    // Check for snackbar trigger after frame is built
+    ticketState.when(
+      data: (tickets) {
+        if (ticketNotifier.showNoMatchSnackbar && ticketNotifier.filteredTicketCount == 0) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar(); // Clear any existing snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No match'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          });
+        }
+      },
+      loading: () {},
+      error: (_, __) {},
+    );
 
     Color _getStatusColor(String status) {
       switch (status.toLowerCase()) {
@@ -29,6 +48,7 @@ class TicketScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tickets'),
+        surfaceTintColor: Colors.transparent,
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -51,20 +71,31 @@ class TicketScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title section
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(ticket.status).withAlpha(20),
+                        color: _getStatusColor(ticket.status).withAlpha(50),
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Text(ticket.status,style: TextStyle(color: _getStatusColor(ticket.status))),
+                      child: Text(
+                        ticket.status,
+                        style: TextStyle(color: _getStatusColor(ticket.status)),
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Text("id: ${ticket.id}",style: const  TextStyle(fontSize: 14,color: Colors.grey,fontWeight: FontWeight.w500,)),
-                    Text(ticket.title,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                    Text(
+                      "id: ${ticket.id}",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      ticket.title,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(height: 12),
-                    // Subtitle and trailing section
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -72,7 +103,7 @@ class TicketScreen extends ConsumerWidget {
                         Text('\$${ticket.price.toStringAsFixed(2)}'),
                       ],
                     ),
-                    Divider(),
+                    const Divider(),
                     PriorityButtons(priorityText: ticket.priority),
                   ],
                 ),
@@ -84,10 +115,11 @@ class TicketScreen extends ConsumerWidget {
         error: (error, _) => Center(child: Text('Error: $error')),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: 0,
         onTap: (index) {
           if (index == 1) context.push('/contacts');
-          if (index == 2) context.push('/profile');
+          else if (index == 2) context.push('/profile');
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.confirmation_number), label: 'Tickets'),

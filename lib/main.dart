@@ -19,9 +19,10 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.grey[100],
-        appBarTheme: const AppBarTheme(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme:  AppBarTheme(
           backgroundColor: Colors.white,
+          shadowColor: Colors.transparent,
           elevation: 1,
           titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
         ),
